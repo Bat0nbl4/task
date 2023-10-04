@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\User;
+use App\Models\Logs;
 use Illuminate\Http\Request;
 use App\Http\Requests\BookRequest;
 use App\Http\Requests\UserRequest;
@@ -27,7 +28,7 @@ class AdminController extends Controller
 
         if ( auth('admin')->attempt($data)) {
             session()->put('admin_login', $data['login']);
-            return redirect(route('admin.panel'));
+            return redirect(route('admin.panel_books'));
         }
 
         return redirect(route('admin.login'))->withErrors(['login' => 'Неверный логин или пароль']);
@@ -41,7 +42,7 @@ class AdminController extends Controller
     }
 
 
-    public function show_panel(Request $request) {
+    public function show_panel_books(Request $request) {
 
         if ($request->sort_by) {
             session()->put('reverse_books', $request->reverse_books);
@@ -61,6 +62,27 @@ class AdminController extends Controller
 
         Paginator::useBootstrap();
         return view('admin.admin_panel_books', compact('books', 'search'));
+    }
+
+    public function show_panel_logs(Request $request) {
+        if ($request->sort_by) {
+            session()->put('reverse_logs', $request->reverse_logs);
+            session()->put('logs_sort_type', $request->sort_by);
+        }
+        $search = [$request->search_by, $request->search];
+
+        if (session()->get('reverse_logs') == true) {
+            $logs = Logs::orderByDesc(session()->get('logs_sort_type'))->paginate(25);
+        } else {
+            $logs = Logs::orderBy(session()->get('logs_sort_type'))->paginate(25);
+        }
+
+        if ($request->search) {
+            $logs = Logs::where($search[0], '=', $search[1])->paginate(25);
+        }
+
+        Paginator::useBootstrap();
+        return view('admin.admin_panel_logs', compact('logs', 'search'));
     }
 
     public function show_panel_users(Request $request) {
@@ -100,13 +122,27 @@ class AdminController extends Controller
     public function update(BookRequest $request) {
 
         $data = $request->validated();
-        $image = $request->file;
+        if ($request->file) {
+            $path = $request->file('file')->store('uploads', 'public');
+        } else {
+            $path = 'none';
+        }
 
         $book = Book::find($request->id);
-
         $book->update($data);
 
-        if ($image and $image != $book->image) {
+        Logs::create([
+            'book_id' => $book->id,
+            'author' => $book->author,
+            'title' => $book->title,
+            'publisher' => $book->publisher,
+            'genre' => $book->genre,
+            'edition' => $book->edition,
+            'description' => $book->description,
+            'file' => $path,
+        ]);
+
+        if ($path and $path != $book->image) {
             Storage::delete($book->image);
             $book->image = $request->file('file')->store('uploads', 'public');
             $book->save();

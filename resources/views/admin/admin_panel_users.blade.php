@@ -6,7 +6,8 @@
 
 @section('main_content')
     <a class="danger" href="{{ route('admin.logout') }}">Выйти</a>
-    <a href="{{ route('admin.panel') }}">Книги</a>
+    <a href="{{ route('admin.panel_books') }}">Книги</a>
+    <a href="{{ route('admin.panel_logs') }}">Логи</a>
     <a class="here" href="{{ route('admin.panel_users') }}">Пользователи</a>
     <div class="sort_block">
         <form class="sort" type="get" action="{{ route('admin.panel_users') }}">

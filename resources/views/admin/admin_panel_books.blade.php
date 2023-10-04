@@ -6,10 +6,11 @@
 
 @section('main_content')
     <a class="danger" href="{{ route('admin.logout') }}">Выйти</a>
-    <a class="here" href="{{ route('admin.panel') }}">Книги</a>
+    <a class="here" href="{{ route('admin.panel_books') }}">Книги</a>
+    <a href="{{ route('admin.panel_logs') }}">Логи</a>
     <a href="{{ route('admin.panel_users') }}">Пользователи</a>
     <div class="sort_block">
-        <form class="sort" type="get" action="{{ route('admin.panel') }}">
+        <form class="sort" type="get" action="{{ route('admin.panel_books') }}">
             <span>Сортировать по</span>
             <div class="entry">
                 <select name="sort_by">
@@ -17,7 +18,6 @@
                     <option @selected(session()->get('books_sort_type') == 'title') value="title">Название</option>
                     <option @selected(session()->get('books_sort_type') == 'author') value="author">Автор</option>
                     <option @selected(session()->get('books_sort_type') == 'publisher') value="publisher">Издатель</option>
-
                 </select>
             </div>
             <label style="display: flex; margin: 0 5px; align-items: center">
@@ -27,7 +27,7 @@
 
             <button class="button" type="submit">Применить</button>
         </form>
-        <form class="sort" type="get" action="{{ route('admin.panel') }}">
+        <form class="sort" type="get" action="{{ route('admin.panel_books') }}">
             <span style="margin-left: 30px">Искать по</span>
             <div class="entry">
                 <select name="search_by">
@@ -50,6 +50,8 @@
                 <td>Название</td>
                 <td>Автор</td>
                 <td>Издатель</td>
+                <td>Издание</td>
+                <td>Жанр</td>
                 <td>Дата публикации</td>
                 <td>Действия</td>
             </tr>
@@ -59,6 +61,8 @@
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->author }}</td>
                     <td>{{ $book->publisher }}</td>
+                    <td>{{ $book->edition }}</td>
+                    <td>{{ $book->genre }}</td>
                     <td>{{ $book->created_at->day }}.{{ $book->created_at->month }}.{{ $book->created_at->year }}</td>
                     <td>
                         <a href="{{ route('book', ['id' => $book->id]) }}">Открыть</a>

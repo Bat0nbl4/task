@@ -15,7 +15,7 @@
         <nav>
             <a href="{{ route('library') }}">Библиотека</a>
             @auth('admin')
-                <a href="{{ route('admin.panel') }}"><?php echo session()->get('admin_login')?></a>
+                <a href="{{ route('admin.panel_books') }}"><?php echo session()->get('admin_login')?></a>
             @endauth
             @auth('web')
                 <a href="{{ route('lk') }}" class="login-btn"><?php echo session()->get('login')?></a>

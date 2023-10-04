@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Enums;
+use App\Models\Logs;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Enum;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use function Laravel\Prompts\password;
-use function Laravel\Prompts\search;
 
 class MainController extends Controller
 {
@@ -43,6 +41,17 @@ class MainController extends Controller
             'edition' => ($data['edition']),
             'description' => ($data['description']),
             'image' => $path,
+        ]);
+
+        Logs::create([
+            'book_id' => $book->id,
+            'author' => $book->author,
+            'title' => $book->title,
+            'publisher' => $book->publisher,
+            'genre' => $book->genre,
+            'edition' => $book->edition,
+            'description' => $book->description,
+            'file' => $path,
         ]);
 
         return redirect(route('book', ['id' => $book->id]));
@@ -103,13 +112,17 @@ class MainController extends Controller
             session()->put('users_sort_type', 'id');
             session()->put('reverse_users', '');
         }
+        if (!session()->has('logs_sort_type')) {
+            session()->put('logs_sort_type', 'id');
+            session()->put('reverse_logs', '');
+        }
 
         $books = Book::all()->sortByDesc('created_at')->take(5);
         return view('home', compact('books'));
     }
 
     public function show_book($id) {
-        $book = Book::where('id', $id) -> first();
+        //$book = Book::where('id', $id) -> first();
         return view('library/book', ['id' => $id]);
         /*
         if ($book) {

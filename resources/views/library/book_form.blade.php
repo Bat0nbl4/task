@@ -21,9 +21,9 @@
             @enderror
         </div>
         <div class="entry">
-            <input value="{{ isset($book) ? $book->title : '' }}" type="text" name="author" id="author" placeholder="Автор">
+            <input value="{{ isset($book) ? $book->author : '' }}" type="text" name="author" id="author" placeholder="Автор">
             @error('title')
-            <span class="error">{{ $message }}</span>
+                <span class="error">{{ $message }}</span>
             @enderror
         </div>
         <div class="entry">
@@ -35,7 +35,7 @@
         <div class="entry">
             <select type="edition" name="edition" id="edition">
                 @foreach(\App\Enums\Enums::cases() as $key => $label)
-                    <option value="{{ $label->value }}">{{ $label->value }}</option>
+                    <option @selected(isset($book) ? $book->edition == $label->value : null) value="{{ $label->value }}">{{ $label->value }}</option>
                 @endforeach
             </select>
             @error('edition')

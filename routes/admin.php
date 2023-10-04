@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\AdminController;
 Route::middleware('auth:admin')->group(function () {
     Route::resource('books', AdminController::class);
     Route::get('logout', [AdminController::class, 'logout'])->name('logout');
-    Route::get('panel/books', [AdminController::class, 'show_panel'])->name('panel');
+    Route::get('panel/books', [AdminController::class, 'show_panel_books'])->name('panel_books');
+    Route::get('panel/logs', [AdminController::class, 'show_panel_logs'])->name('panel_logs');
     Route::get('panel/users', [AdminController::class, 'show_panel_users'])->name('panel_users');
     Route::get('book_form{id?}', [AdminController::class, 'edit'])->name('edit');
     Route::get('register{id?}', [AdminController::class, 'edit_user'])->name('edit_user');

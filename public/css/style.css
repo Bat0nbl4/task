@@ -341,7 +341,7 @@ form span {
         box-shadow: 0 2px 4px rgba(255, 0, 0, 1.0);
     }
     50% {
-        box-shadow: 0 3px 6px rgba(255, 0, 0, 1.0);
+        box-shadow: 0 3px 10px rgba(255, 0, 0, 1.0);
     }
     100% {
         box-shadow: 0 2px 4px rgba(255, 0, 0, 1.0);

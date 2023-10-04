@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserTags;
 use App\Models\Book;
 use App\Models\User;
+use App\Models\Logs;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
@@ -71,6 +72,7 @@ class AuthController extends Controller
         ]);
 
         Book::where('publisher', '=', session()->get('login'))->update(['publisher' => $data['login']]);
+        Logs::where('publisher', '=', session()->get('login'))->update(['publisher' => $data['login']]);
 
         session()->put('login', $data['login']);
 
