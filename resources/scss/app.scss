@@ -1,0 +1,242 @@
+* {
+    font-family: Arial;
+    text-decoration: none;
+    color: black;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+header .head {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    height: 48px;
+}
+
+a {
+    color: rgba(59, 93, 255, 1);
+}
+
+nav {
+    margin-left: auto;
+}
+
+nav a {
+    margin: 0 2px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    text-decoration: none;
+    background-color: black;
+    color: white;
+}
+
+.login-btn {
+    background-color: red;
+    border: none;
+    color: white;
+}
+
+.main_content {
+    width: 80%;
+    min-width: 400px;
+    margin: 0 auto;
+    flex: 1 0 auto;
+}
+
+.entry {
+    margin: 20px 0;
+}
+
+.form {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 5px 30px 30px 30px;
+    align-items: center;
+    justify-content: center;
+    margin: 5em auto 0 auto;
+    flex-wrap: wrap;
+}
+
+form {
+    width: 20em;
+}
+
+form select {
+    width: 100%;
+    border: none;
+    border-bottom: solid black 1px;
+    outline: none;
+    height: 20pt;
+    font-size: 12pt;
+    transition: 0.2s;
+}
+
+form input {
+    height: 17pt;
+    border: none;
+    border-bottom: solid black 1px;
+    outline: none;
+    font-size: 12pt;
+    width: 100%;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+form input:focus {
+    font-size: 16pt;
+}
+
+form .error {
+    margin: 0;
+    color: red;
+}
+
+form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 30vh;
+    outline: none;
+    font-size: 12pt;
+    transition: 0.2s;
+    resize: none;
+}
+
+form textarea:focus {
+    font-size: 14pt;
+}
+
+.warning_error {
+    margin: 0 10px;
+    color: red;
+}
+
+form span {
+    padding: 0;
+    margin: 0 auto;
+}
+
+form img {
+    display: block;
+    margin: 0 auto;
+    width: 240px;
+    height: 320px;
+    border: solid black 1px;
+    font-size: 12pt;
+}
+
+form span {
+    display: block;
+    margin: 25px 0 0 0;
+    font-size: 11pt;
+}
+
+.button {
+    all: unset;
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    font-size: 12pt;
+    width: 100px;
+    padding: 5px;
+    background-color: rgb(240, 0, 0);
+    border: solid red 2px;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    bottom: 3px;
+    box-shadow: 0 5px 0 rgb(220, 0, 0);
+    cursor: pointer;
+}
+
+.logout {
+    background-color: white;
+    border: solid red 2px;
+    color: red;
+}
+
+.full_w {
+    width: 100%;
+}
+
+.lk_menu {
+    margin-top: 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.public_button {
+    width: 150px;
+}
+
+.button:active {
+    bottom: 0;
+    box-shadow: 0 2px 0 rgb(220, 0, 0);
+}
+
+.right-button {
+    margin-left: auto;
+}
+
+.list {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.card {
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    width:  20%;
+    min-width: 200px;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transition: scale(1.2);
+}
+
+.card img {
+    background: black;
+    border: solid black 1px;
+    max-width: 100%;
+    aspect-ratio: 3 / 4;
+}
+
+footer {
+    margin-top: 10vh;
+    flex: 0 0 auto;
+    color: white;
+    background-color: #1a202c;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    min-height: 5vh;
+    overflow: hidden;
+}
+
+footer * {
+    color: white;
+    text-align: left;
+}
