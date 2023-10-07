@@ -1,83 +1,21 @@
 @extends('layout')
 
 @section('title')
-    Личный кабинет
+    Страница пользователя
 @endsection
 
+
 @section('main_content')
-    <?php
-        use App\Models\User;
-        $user = User::where('login', session()->get('login')) -> first();
-    ?>
-    @if(isset($massage))
-        <span class="completed">{{ $massage }}</span>
-    @endif
-    @if(isset($password))
-        <form method="post" class="form" action="{{ route('change_user_password') }}">
-            @csrf
-            @method('PUT')
-            <input hidden name="id" value="{{ $user->id }}">
-            <h2>Смена пароля</h2>
-            <div class="entry">
-                <input name="old_password" type="password" placeholder="Старый пароль">
-                @error('old_password')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="password">
-                <input name="password" type="password" placeholder="Новый пароль">
-                @error('password')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="entry">
-                <input name="password_confirmation" type="password" placeholder="Повтор пароля">
-                @error('password_confirmation')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="entry">
-                <button class="button full_w" type="submit">Сменить</button>
-            </div>
-            <a href="{{ route('lk') }}">Я передумал</a>
-        </form>
-    @else
-        <form method="post" class="form" action="{{ route('change_user_data') }}">
-            @csrf
-            @method('PUT')
-            <h2>Данные пользователя</h2>
-            <input hidden name="id" value="{{ $user->id }}">
-            <span>Ваш ID: {{ $user->id }}</span>
-            <span>Статус: {{ $user->usertag }}</span>
-            <div class="entry">
-                <span>Имя пользователя: </span>
-                <input name="login" value="{{ $user->login }}">
-                @error('login')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="entry">
-                <span>Почта: </span>
-                <input name="email" value="{{ $user->email }}">
-                @error('email')
-                <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="entry">
-                <button class="button full_w" type="submit">Изменить данные</button>
-            </div>
-            <div class="entry">
-                <a href="{{ route('lk', ['password' => 'true']) }}" class="button full_w logout">Сменить пароль</a>
-            </div>
-            <div class="entry">
-                <a href="{{ route('logout') }}" class="button full_w logout">Выйти</a>
-            </div>
-            <a href="{{ route('show_user', ['user' => $user->login]) }}">Посмотреть свой профиль как пользователь</a>
-        </form>
-    @endif
-    @if($user->usertag == 'Издатель')
-        <div class="form">
-            <h1 class="title">Ваши книги</h1>
+    <div class="form">
+        <p>ID: {{ $user->id }}</p>
+        <h1>{{ $user->login }}</h1>
+        <p>Почта: {{ $user->email }}</p>
+        <p>Роль: {{ $user->usertag }}</p>
+        @if(session()->get('login') == $user->login)
+            <a href="{{ route('lk') }}">Перейти в личный кабинет</a>
+        @endif
+        @if($user->usertag == 'Издатель')
+            <h2 class="title">Книги этого издателя</h2>
             <div class="sort_block">
                 <form class="sort" type="get" action="{{ route('lk') }}">
                     <span>Сортировать по</span>
@@ -134,9 +72,6 @@
             <div class="pagination">
                 {{ $books->links() }}
             </div>
-            <div class="lk_menu">
-                <a href="{{ route('book_form') }}" class="button public_button">Создать книгу</a>
-            </div>
-        </div>
-    @endif
+        @endif
+    </div>
 @endsection

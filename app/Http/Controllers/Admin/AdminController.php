@@ -41,70 +41,89 @@ class AdminController extends Controller
         return redirect(route('admin.login'));
     }
 
+    private function change_search($request) {
+        if ($request->search_by) {
+            session()->put('search_by', $request->search_by);
+            session()->put('search', $request->search);
+        }
+    }
 
     public function show_panel_books(Request $request) {
 
+        $this->change_search($request);
         if ($request->sort_by) {
             session()->put('reverse_books', $request->reverse_books);
             session()->put('books_sort_type', $request->sort_by);
         }
-        $search = [$request->search_by, $request->search];
 
-        if (session()->get('reverse_books') == true) {
-            $books = Book::orderByDesc(session()->get('books_sort_type'))->paginate(25);
+        if ($request->search != '') {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('books_sort_type'))->paginate(25);
+            } else {
+                $books = Book::where(session()->get('search_by'), '=', session()->get('search'))->orderBy(session()->get('books_sort_type'))->paginate(25);
+            }
         } else {
-            $books = Book::orderBy(session()->get('books_sort_type'))->paginate(25);
-        }
-
-        if ($request->search) {
-            $books = Book::where($search[0], '=', $search[1])->paginate(25);
+            if (session()->get('reverse_books') == true) {
+                $books = Book::orderByDesc(session()->get('books_sort_type'))->paginate(25);
+            } else {
+                $books = Book::orderBy(session()->get('books_sort_type'))->paginate(25);
+            }
         }
 
         Paginator::useBootstrap();
-        return view('admin.admin_panel_books', compact('books', 'search'));
+        return view('admin.admin_panel_books', compact('books', 'request'));
     }
 
     public function show_panel_logs(Request $request) {
+
+        $this->change_search($request);
         if ($request->sort_by) {
             session()->put('reverse_logs', $request->reverse_logs);
             session()->put('logs_sort_type', $request->sort_by);
         }
-        $search = [$request->search_by, $request->search];
 
-        if (session()->get('reverse_logs') == true) {
-            $logs = Logs::orderByDesc(session()->get('logs_sort_type'))->paginate(25);
+        if ($request->search != '') {
+            if (session()->get('reverse_logs') == true) {
+                $logs = Logs::where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('logs_sort_type'))->paginate(25);
+            } else {
+                $logs = Logs::where(session()->get('search_by'), '=', session()->get('search'))->orderBy(session()->get('logs_sort_type'))->paginate(25);
+            }
         } else {
-            $logs = Logs::orderBy(session()->get('logs_sort_type'))->paginate(25);
-        }
-
-        if ($request->search) {
-            $logs = Logs::where($search[0], '=', $search[1])->paginate(25);
+            if (session()->get('reverse_logs') == true) {
+                $logs = Logs::orderByDesc(session()->get('logs_sort_type'))->paginate(25);
+            } else {
+                $logs = Logs::orderBy(session()->get('logs_sort_type'))->paginate(25);
+            }
         }
 
         Paginator::useBootstrap();
-        return view('admin.admin_panel_logs', compact('logs', 'search'));
+        return view('admin.admin_panel_logs', compact('logs', 'request'));
     }
 
     public function show_panel_users(Request $request) {
 
+        $this->change_search($request);
         if ($request->sort_by) {
             session()->put('reverse_users', $request->reverse_users);
             session()->put('users_sort_type', $request->sort_by);
         }
-        $search = [$request->search_by, $request->search];
 
-        if (session()->get('reverse_users') == true) {
-            $users = User::orderByDesc(session()->get('users_sort_type'))->paginate(25);
+        if ($request->search != '') {
+            if (session()->get('reverse_users') == true) {
+                $users = User::where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('users_sort_type'))->paginate(25);
+            } else {
+                $users = User::where(session()->get('search_by'), '=', session()->get('search'))->orderBy(session()->get('users_sort_type'))->paginate(25);
+            }
         } else {
-            $users = User::orderBy(session()->get('users_sort_type'))->paginate(25);
-        }
-
-        if ($request->search) {
-            $users = User::where($search[0], '=', $search[1])->paginate(25);
+            if (session()->get('reverse_users') == true) {
+                $users = User::orderByDesc(session()->get('users_sort_type'))->paginate(25);
+            } else {
+                $users = User::orderBy(session()->get('users_sort_type'))->paginate(25);
+            }
         }
 
         Paginator::useBootstrap();
-        return view('admin.admin_panel_users', compact('users', 'search'));
+        return view('admin.admin_panel_users', compact('users', 'request'));
     }
 
     public function edit(Request $request) {

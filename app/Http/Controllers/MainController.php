@@ -58,6 +58,8 @@ class MainController extends Controller
     }
 
     function books($request) {
+        $this->check();
+
         if ($request->sort_by) {
             session()->put('reverse_books', $request->reverse_books);
             session()->put('books_sort_type', $request->sort_by);
@@ -80,42 +82,120 @@ class MainController extends Controller
 
     public function lk(Request $request, string $password = null) {
 
-        $search = [$request->search_by, $request->search];
-        if (session()->get('reverse_books') == true) {
-            $books = Book::where('publisher', '=', session()->get('login'))->orderByDesc(session()->get('books_sort_type'))->paginate(10);
-        } else {
-            $books = Book::where('publisher', '=', session()->get('login'))->orderBy(session()->get('books_sort_type'))->paginate(10);
+        $this->check();
+        if ($request->sort_by) {
+            session()->put('reverse_books', $request->reverse_users);
+            session()->put('books_sort_type', $request->sort_by);
         }
-        if ($request->search) {
-            $books = Book::where($search[0], '=', $search[1])->paginate(10);
+
+        $this->change_search($request);
+
+        // = [$request->search_by, $request->search];
+        if ($request->search != '') {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::where('publisher', '=', session()->get('login'))->where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('books_sort_type'))->paginate(10);
+            } else {
+                $books = Book::where('publisher', '=', session()->get('login'))->where(session()->get('search_by'), '=', session()->get('search'))->orderBy(session()->get('books_sort_type'))->paginate(10);
+            }
+        } else {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::where('publisher', '=', session()->get('login'))->orderByDesc(session()->get('books_sort_type'))->paginate(10);
+            } else {
+                $books = Book::where('publisher', '=', session()->get('login'))->orderBy(session()->get('books_sort_type'))->paginate(10);
+            }
         }
 
         Paginator::useBootstrap();
-        return view('lk', compact('books', 'search', 'password'));
+        return view('lk', compact('books', 'request', 'password'));
+    }
+
+    public function show_user(Request $request) {
+
+        $user = User::where('login', '=', $request->user)->first();
+
+        $this->check();
+        if ($request->sort_by) {
+            session()->put('reverse_books', $request->reverse_users);
+            session()->put('books_sort_type', $request->sort_by);
+        }
+
+        $this->change_search($request);
+
+        if ($request->search != '') {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::where('publisher', '=', $user->login)->where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('books_sort_type'))->paginate(10);
+            } else {
+                $books = Book::where('publisher', '=', $user->login)->where(session()->get('search_by'), '=', session()->get('search'))->orderBy(session()->get('books_sort_type'))->paginate(10);
+            }
+        } else {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::where('publisher', '=', $user->login)->orderByDesc(session()->get('books_sort_type'))->paginate(10);
+            } else {
+                $books = Book::where('publisher', '=', $user->login)->orderBy(session()->get('books_sort_type'))->paginate(10);
+            }
+        }
+
+        Paginator::useBootstrap();
+        return view('user', compact('user', 'books'));
     }
 
     public function library(Request $request) {
 
-        $books = $this->books($request)[0];
-        $search = $this->books($request)[1];
+        $this->check();
+        if ($request->sort_by) {
+            session()->put('reverse_books', $request->reverse_books);
+            session()->put('books_sort_type', $request->sort_by);
+        }
 
-        return view('library/library', compact('books', 'search'));
+        $this->change_search($request);
+
+        if ($request->search != '') {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('books_sort_type'))->paginate(10);
+            } else {
+                $books = Book::where(session()->get('search_by'), '=', session()->get('search'))->orderBy(session()->get('books_sort_type'))->paginate(10);
+            }
+        } else {
+            if (session()->get('reverse_books') == true) {
+                $books = Book::orderByDesc(session()->get('books_sort_type'))->paginate(10);
+            } else {
+                $books = Book::orderBy(session()->get('books_sort_type'))->paginate(10);
+            }
+        }
+
+        return view('library/library', compact('books', 'request'));
     }
 
-    public function show_books() {
-
-        if (!session()->has('books_sort_type')) {
+    // ---------------------- PRIVATE
+    private function check() {
+        if (!session()->has('books_sort_type') or session()->get('books_sort_type') != '') {
             session()->put('books_sort_type', 'id');
             session()->put('reverse_books', '');
         }
-        if (!session()->has('users_sort_type')) {
+        if (!session()->has('users_sort_type') or session()->get('users_sort_type') != '') {
             session()->put('users_sort_type', 'id');
             session()->put('reverse_users', '');
         }
-        if (!session()->has('logs_sort_type')) {
+        if (!session()->has('logs_sort_type') or session()->get('logs_sort_type') != '') {
             session()->put('logs_sort_type', 'id');
             session()->put('reverse_logs', '');
         }
+        if (!session()->has('search_by')) {
+            session()->put('search_by', 'id');
+            session()->put('search', '');
+        }
+    }
+
+    private function change_search($request) {
+        if ($request->search_by) {
+            session()->put('search_by', $request->search_by);
+            session()->put('search', $request->search);
+        }
+    }
+    // ----------------------- END PRIVATE
+
+    public function show_books() {
+        $this->check();
 
         $books = Book::all()->sortByDesc('created_at')->take(5);
         return view('home', compact('books'));

@@ -23,28 +23,25 @@
                     <option @selected(session()->get('logs_sort_type') == 'edition') value="edition">Издание</option>
                 </select>
             </div>
-            <label style="display: flex; margin: 0 5px; align-items: center">
+            <label>
                 <input @checked(session()->get('reverse_logs') == true) type="checkbox" name="reverse_logs" value="true">
-                <span style="font-size: 12pt">Обраная сортировка</span>
+                <span>Обраная сортировка</span>
             </label>
-
-            <button class="button" type="submit">Применить</button>
-        </form>
-        <form class="sort" type="get" action="{{ route('admin.panel_logs') }}">
-            <span style="margin-left: 30px">Искать по</span>
+            <div class="vertical_line"></div>
+            <span>Искать по</span>
             <div class="entry">
                 <select name="search_by">
-                    <option @selected($search[0] == 'id') value="id"> ID</option>
-                    <option @selected($search[0] == 'book_id') value="book_id">ID книги</option>
-                    <option @selected($search[0] == 'title') value="title">Название</option>
-                    <option @selected($search[0] == 'author') value="author">Автор</option>
-                    <option @selected($search[0] == 'publisher') value="publisher">Издатель</option>
-                    <option @selected($search[0] == 'genre') value="genre">Жанр</option>
-                    <option @selected($search[0] == 'edition') value="edition">Издание</option>
+                    <option @selected(session()->get('search_by') == 'id') value="id"> ID</option>
+                    <option @selected(session()->get('search_by') == 'book_id') value="book_id">ID книги</option>
+                    <option @selected(session()->get('search_by') == 'title') value="title">Название</option>
+                    <option @selected(session()->get('search_by') == 'author') value="author">Автор</option>
+                    <option @selected(session()->get('search_by') == 'publisher') value="publisher">Издатель</option>
+                    <option @selected(session()->get('search_by') == 'genre') value="genre">Жанр</option>
+                    <option @selected(session()->get('search_by') == 'edition') value="edition">Издание</option>
                 </select>
             </div>
-            <input type="text" name="search" value="{{ $search[1] }}">
-            <button class="button" type="submit">Поиск</button>
+            <input type="text" name="search" value="{{ session()->get('search') }}">
+            <button class="button" type="submit">Применить</button>
         </form>
     </div>
     @if($logs->isEmpty())

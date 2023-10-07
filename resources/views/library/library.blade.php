@@ -5,45 +5,50 @@
 @endsection
 
 @section('main_content')
-    <div class="sort_block">
+    <div class="sort_block" xmlns="http://www.w3.org/1999/html">
         <form class="sort" type="get" action="{{ route('library') }}">
             <span>Сортировать по</span>
             <div class="entry">
                 <select name="sort_by">
                     <option @selected(session()->get('books_sort_type') == 'id') value="id"> ID</option>
                     <option @selected(session()->get('books_sort_type') == 'title') value="title">Название</option>
+                    <option @selected(session()->get('books_sort_type') == 'genre') value="genre">Жанр</option>
                     <option @selected(session()->get('books_sort_type') == 'author') value="author">Автор</option>
                     <option @selected(session()->get('books_sort_type') == 'publisher') value="publisher">Издатель</option>
-
+                    <option @selected(session()->get('books_sort_type') == 'edition') value="edition">Издание</option>
                 </select>
             </div>
-            <label style="display: flex; margin: 0 5px; align-items: center">
+            <label>
                 <input @checked(session()->get('reverse_books') == true) type="checkbox" name="reverse_books" value="true">
-                <span style="font-size: 12pt">Обраная сортировка</span>
+                <span>Обраная сортировка</span>
             </label>
-
-            <button class="button" type="submit">Применить</button>
-        </form>
-        <form class="sort" type="get" action="{{ route('library') }}">
-            <span style="margin-left: 30px">Искать по</span>
+            <div class="vertical_line"></div>
+            <span>Искать по</span>
             <div class="entry">
                 <select name="search_by">
-                    <option @selected($search[0] == 'id') value="id"> ID</option>
-                    <option @selected($search[0] == 'title') value="title">Название</option>
-                    <option @selected($search[0] == 'author') value="author">Автор</option>
-                    <option @selected($search[0] == 'publisher') value="publisher">Издатель</option>
+                    <option @selected(session()->get('search_by') == 'id') value="id"> ID</option>
+                    <option @selected(session()->get('search_by') == 'title') value="title">Название</option>
+                    <option @selected(session()->get('search_by') == 'genre') value="genre">Жанр</option>
+                    <option @selected(session()->get('search_by') == 'author') value="author">Автор</option>
+                    <option @selected(session()->get('search_by') == 'publisher') value="publisher">Издатель</option>
+                    <option @selected(session()->get('search_by') == 'edition') value="edition">Издание</option>
                 </select>
             </div>
-            <input type="text" name="search" value="{{ $search[1] }}">
-            <button class="button" type="submit">Поиск</button>
+            <input type="text" name="search" value="{{ session()->get('search') }}">
+            <button class="button" type="submit">Применить</button>
         </form>
     </div>
-    <div class="list">
-        @foreach($books as $book)
-            <a class="card" href="{{ route('book', ['id' => $book->id]) }}">
-                <div class="full_H">
-                    <h2>{{ $book->title }}</h2>
-                    <p>Автор: {{ $book->author }}</p>
+    @if($books->isEmpty())
+        <h3 class="title danger">Ничего не найдено</h3>
+    @else
+        <div class="list">
+            @foreach($books as $book)
+                <a class="card" href="{{ route('book', ['id' => $book->id]) }}">
+                    <div class="full_H">
+                        <h2>{{ $book->title }}</h2>
+                        <span>Автор: {{ $book->author }}</span>
+                        <span>Жанр: {{ $book->genre }}</span>
+                    </div>
                     @if($book->image != 'none')
                         <img src="{{ asset('/storage/' . $book->image) }}">
                     @else
@@ -52,16 +57,16 @@
                             <h4>{{ $book->author }}</h4>
                         </div>
                     @endif
-
                     <p class="description">{{ $book->description }}</p>
-                </div>
-                <span>Издатель: {{ $book->publisher }}</span>
-                <span class="date">Дата публикации: {{ $book->created_at->day }} {{ $book->created_at->englishMonth }} {{ $book->created_at->year }}</span>
-                <span class="gray">ID: {{ $book->id }}</span>
-            </a>
-        @endforeach
-    </div>
-    <div class="pagination">
-        {{ $books->links() }}
-    </div>
+                    <span>Издатель: {{ $book->publisher }}</span>
+                    <span class="date">Дата публикации: {{ $book->created_at->day }} {{ $book->created_at->englishMonth }} {{ $book->created_at->year }}</span>
+                    <span class="gray">ID: {{ $book->id }}</span>
+                </a>
+            @endforeach
+        </div>
+        <div class="pagination">
+            {{ $books->links() }}
+        </div>
+    @endif
+
 @endsection

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', [MainController::class, 'show_books' ])->name('home');
 Route::get('/book/{id}', [MainController::class, 'show_book'])->name('book');
 Route::get('/library', [MainController::class, 'library'])->name('library');
+Route::get('/user/{user}', [MainController::class, 'show_user'])->name('show_user');
 
 Route::get('/abda', function () { Session::flush(); });
 

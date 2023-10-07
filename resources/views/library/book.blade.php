@@ -5,11 +5,7 @@
 use App\Models\Book;
 
 $book = Book::where('id', $id) -> first();
-/*
-if ($book->image == 'none') {
-    return '1';
-}
-*/
+
 ?>
 
 @section('title')
@@ -31,7 +27,12 @@ if ($book->image == 'none') {
         @endif
         <p>Жанр: {{ $book->genre }}</p>
         <p>{{ $book->description }}</p>
+        @if($book->publisher == session()->get('login'))
             <p>Издатель: <a href="{{ route('lk') }}">{{ $book->publisher }}</a></p>
+        @else
+            <p>Издатель: <a href="{{ route('show_user', ['user' => $book->publisher]) }}">{{ $book->publisher }}</a></p>
+        @endif
+
         <p>{{ $book->edition }}</p>
         <p>Дата публикации {{ $book->created_at->day }} {{ $book->created_at->englishMonth }} {{ $book->created_at->year }}</p>
         @if($book->publisher == session()->get('login') or session()->has('admin_login'))

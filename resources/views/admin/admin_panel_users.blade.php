@@ -20,24 +20,22 @@
                     <option @selected(session()->get('users_sort_type') == 'usertag') value="usertag">Роль</option>
                 </select>
             </div>
-            <label style="display: flex; margin: 0 5px; align-items: center">
+            <label>
                 <input @checked(session()->get('reverse_users') == true) type="checkbox" name="reverse_users" value="true">
-                <span style="font-size: 12pt">Обраная сортировка</span>
+                <span>Обраная сортировка</span>
             </label>
-
-            <button class="button" type="submit">Применить</button>
-        </form>
-        <form class="sort" type="get" action="{{ route('admin.panel_users') }}">
-            <span style="margin-left: 30px">Искать по</span>
+            <div class="vertical_line"></div>
+            <span>Искать по</span>
             <div class="entry">
                 <select name="search_by">
-                    <option @selected($search[0] == 'id') value="id"> ID</option>
-                    <option @selected($search[0] == 'login') value="login">Логин</option>
-                    <option @selected($search[0] == 'email') value="email">Почта</option>
+                    <option @selected(session()->get('search_by') == 'id') value="id"> ID</option>
+                    <option @selected(session()->get('search_by') == 'login') value="login">Логин</option>
+                    <option @selected(session()->get('search_by') == 'email') value="email">Почта</option>
+                    <option @selected(session()->get('search_by') == 'usertag') value="usertag">Роль</option>
                 </select>
             </div>
-            <input type="text" name="search" value="{{ $search[1] }}">
-            <button class="button" type="submit">Поиск</button>
+            <input type="text" name="search" value="{{ session()->get('search') }}">
+            <button class="button" type="submit">Применить</button>
         </form>
     </div>
     @if($users->isEmpty())
@@ -55,7 +53,7 @@
             @foreach($users as $user)
                 <tr>
                     <td class="admin_list_id">{{ $user->id }}</td>
-                    <td>{{ $user->login }}</td>
+                    <td><a href="{{ route('show_user', ['user' => $user->login]) }}">{{ $user->login }}</a></td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->usertag }}</td>
                     <td>{{ $user->created_at->day }}.{{ $user->created_at->month }}.{{ $user->created_at->year }}</td>
