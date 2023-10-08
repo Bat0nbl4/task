@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('publisher');
             $table->string('genre');
             $table->string('edition');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('file')->nullable();
             $table->timestamps();
         });

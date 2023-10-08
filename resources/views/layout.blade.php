@@ -18,7 +18,7 @@
                 <a href="{{ route('admin.panel_books') }}" class="login-btn"><?php echo session()->get('admin_login')?></a>
             @endauth
             @auth('web')
-                <a href="{{ route('lk') }}" class="login-btn"><?php echo session()->get('login')?></a>
+                <a href="{{ route('lk', ['password' => false]) }}" class="login-btn"><?php echo session()->get('login')?></a>
             @endauth
             @guest('web')
                 <a href="{{ route('login') }}" class="login-btn">Войти</a>

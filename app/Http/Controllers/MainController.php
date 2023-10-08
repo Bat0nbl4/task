@@ -56,7 +56,7 @@ class MainController extends Controller
 
         return redirect(route('book', ['id' => $book->id]));
     }
-
+    /*
     function books($request) {
         $this->check();
 
@@ -78,9 +78,9 @@ class MainController extends Controller
 
         Paginator::useBootstrap();
         return [$books, $search];
-    }
+    }*/
 
-    public function lk(Request $request, string $password = null) {
+    public function lk(Request $request, bool $password = null, string $text = null) {
 
         $this->check();
         if ($request->sort_by) {
@@ -90,7 +90,6 @@ class MainController extends Controller
 
         $this->change_search($request);
 
-        // = [$request->search_by, $request->search];
         if ($request->search != '') {
             if (session()->get('reverse_books') == true) {
                 $books = Book::where('publisher', '=', session()->get('login'))->where(session()->get('search_by'), '=', session()->get('search'))->orderByDesc(session()->get('books_sort_type'))->paginate(10);
@@ -106,7 +105,7 @@ class MainController extends Controller
         }
 
         Paginator::useBootstrap();
-        return view('lk', compact('books', 'request', 'password'));
+        return view('lk', compact('books', 'request', 'password', 'text'));
     }
 
     public function show_user(Request $request) {
@@ -146,7 +145,6 @@ class MainController extends Controller
             session()->put('reverse_books', $request->reverse_books);
             session()->put('books_sort_type', $request->sort_by);
         }
-
         $this->change_search($request);
 
         if ($request->search != '') {
@@ -163,20 +161,25 @@ class MainController extends Controller
             }
         }
 
-        return view('library/library', compact('books', 'request'));
+
+
+        $genres = Book::distinct()->orderBy('genre')->get(['genre']);
+
+        Paginator::useBootstrap();
+        return view('library/library', compact('books', 'request', 'genres'));
     }
 
     // ---------------------- PRIVATE
     private function check() {
-        if (!session()->has('books_sort_type') or session()->get('books_sort_type') != '') {
+        if (!session()->has('books_sort_type') or session()->get('books_sort_type') == '') {
             session()->put('books_sort_type', 'id');
             session()->put('reverse_books', '');
         }
-        if (!session()->has('users_sort_type') or session()->get('users_sort_type') != '') {
+        if (!session()->has('users_sort_type') or session()->get('users_sort_type') == '') {
             session()->put('users_sort_type', 'id');
             session()->put('reverse_users', '');
         }
-        if (!session()->has('logs_sort_type') or session()->get('logs_sort_type') != '') {
+        if (!session()->has('logs_sort_type') or session()->get('logs_sort_type') == '') {
             session()->put('logs_sort_type', 'id');
             session()->put('reverse_logs', '');
         }

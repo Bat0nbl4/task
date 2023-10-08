@@ -38,6 +38,18 @@
             <button class="button" type="submit">Применить</button>
         </form>
     </div>
+    <details class="form">
+        <summary class="title">Список жанров</summary>
+        <ul class="grid">
+            @if($genres->isEmpty())
+                <h3 class="title danger">Ни одного жанра не найдено</h3>
+            @else
+                @foreach($genres as $genre)
+                    <li>{{ $genre->genre }}</li>
+                @endforeach
+            @endif
+        </ul>
+    </details>
     @if($books->isEmpty())
         <h3 class="title danger">Ничего не найдено</h3>
     @else

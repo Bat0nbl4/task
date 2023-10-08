@@ -240,7 +240,7 @@ form span {
 
 .form {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
+    border-radius: 8px;
     padding: 5px 30px 30px 30px;
     align-items: center;
     justify-content: center;
@@ -275,6 +275,7 @@ form span {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-top: 10px;
     justify-content: center;
     width: 100%;
 }
@@ -327,7 +328,7 @@ form span {
     display: block;
     margin: 8px auto 0 auto;
     max-width: 250px;
-    max-height: 300px;
+    max-height: 350px;
 }
 
 .card .img {
@@ -339,10 +340,11 @@ form span {
     margin: 0 auto;
     box-sizing: border-box;
     border: solid black 1px;
+    width: 90%;
+    height: 350px;
     max-width: 250px;
-    max-height: 300px;
-    aspect-ratio: 3 / 4;
     background: lightgray;
+    overflow: hidden;
 }
 
 .admin_header {
@@ -397,20 +399,23 @@ form span {
 
 .sort_block {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .sort {
     display: flex;
     flex-direction: row;
     justify-content: center;
+
     align-items: flex-end;
     box-sizing: border-box;
-    border-radius: 9px;
-    width: 100%;
-    margin: 8px 5px;
-    padding: 8px 0;
+    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px 0;
+
 }
 
 @media screen and (max-width: 1000px) {
@@ -481,6 +486,33 @@ form span {
 .pagination a {
     all: unset;
     cursor: pointer;
+}
+
+details {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+summary {
+    user-select: none;
+}
+
+.grid {
+    column-count: 4;
+}
+
+@media screen and (max-width: 1200px) {
+    .grid {
+        column-count: 3;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .grid {
+        column-count: 2;
+    }
 }
 
 footer {

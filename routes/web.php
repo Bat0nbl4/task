@@ -24,7 +24,7 @@ Route::get('/user/{user}', [MainController::class, 'show_user'])->name('show_use
 Route::get('/abda', function () { Session::flush(); });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/lk/{massage?}{password?}', [MainController::class, 'lk'])->name('lk');
+    Route::get('/lk/{password?}', [MainController::class, 'lk'])->name('lk');
     Route::put('/change_user_data', [AuthController::class, 'change_user_data'])->name('change_user_data');
     Route::put('/change_user_password', [AuthController::class, 'change_user_password'])->name('change_user_password');
 

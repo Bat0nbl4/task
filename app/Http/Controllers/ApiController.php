@@ -10,7 +10,7 @@ class ApiController extends Controller
     public function index(){
         return Book::all();
     }
-    public function show($author){
-        return Book::find($author);
+    public function show($data){
+        return Book::find($data);
     }
 }

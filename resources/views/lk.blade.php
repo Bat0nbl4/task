@@ -9,8 +9,8 @@
         use App\Models\User;
         $user = User::where('login', session()->get('login')) -> first();
     ?>
-    @if(isset($massage))
-        <span class="completed">{{ $massage }}</span>
+    @if(isset($request))
+        <h1>{{ $request->sort_by }}</h1>
     @endif
     @if(isset($password))
         <form method="post" class="form" action="{{ route('change_user_password') }}">
@@ -72,7 +72,11 @@
             <div class="entry">
                 <a href="{{ route('logout') }}" class="button full_w logout">Выйти</a>
             </div>
-            <a href="{{ route('show_user', ['user' => $user->login]) }}">Посмотреть свой профиль как пользователь</a>
+            <span><a href="{{ route('show_user', ['user' => $user->login]) }}">Посмотреть свой профиль как пользователь</a></span>
+            @guest('admin')
+                <span><a href="{{ route('admin.login') }}">Войти как администратор</a></span>
+            @endguest
+
         </form>
     @endif
     @if($user->usertag == 'Издатель')

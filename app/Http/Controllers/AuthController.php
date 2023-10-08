@@ -95,10 +95,8 @@ class AuthController extends Controller
             $user = User::find($request->id);
             $user->update($data);
 
-            return redirect(route('lk', ['massage' => 'Пароль успешено изменён']));
-        } else {
-            return redirect(route('lk', ['password' => 'true']))->withErrors('old_password', 'Неверный пароль');
+            return redirect(route('lk', [ 'password' => '', 'text' => 'Пароль успешено изменён',]));
         }
-
+        return redirect(route('lk', ['password' => 'true', 'text' => '']))->withErrors(['old_password' => 'Неверный пароль']);
     }
 }
